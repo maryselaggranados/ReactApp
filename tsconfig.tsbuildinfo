@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/ai.ts","./src/engine.ts","./src/main.tsx","./src/python.ts","./src/roi.ts","./src/rules.ts","./src/rulespy.ts","./src/selftest.ts","./src/ui.tsx","./src/views/appview.tsx","./src/views/overview.tsx","./src/views/readout.tsx","./src/views/roipanel.tsx","./src/views/rulesview.tsx","./vite.config.ts"],"version":"5.8.3"}
