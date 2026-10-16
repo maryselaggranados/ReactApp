@@ -188,6 +188,28 @@ const ROUTING_RULES: Rule[] = [r2, r3, r4, r5, r6, r7, r8]
 
 const ruleNum = (id: string) => Number(id.slice(1))
 
+// The route each routing rule chooses. R1, R9, and R10 never choose a route here.
+export const ROUTE_OF: Record<string, string> = {
+  R2: PRIVACY,
+  R3: SEV1,
+  R4: ENG,
+  R5: ENG,
+  R6: PRODUCT,
+  R7: SUPPORT,
+  R8: COORD,
+  R11: COORD,
+}
+
+// For each routing rule whose route lost, the ID of the routing rule that won.
+export function routesNotUsed(d: Decision): Record<string, string> {
+  const routing = d.rules_fired.filter((id) => id in ROUTE_OF)
+  const winner = routing.find((id) => ROUTE_OF[id] === d.result)
+  const lost: Record<string, string> = {}
+  if (!winner) return lost
+  for (const id of routing) if (ROUTE_OF[id] !== d.result) lost[id] = winner
+  return lost
+}
+
 export function decide(raw: Partial<RawFields>): Decision {
   const { typed, errors } = validate(raw)
   if (errors.length) {
@@ -288,6 +310,7 @@ export const SCENARIOS: Scenario[] = [
   sc('T7', 'Bug', 'bug', 'no', '5', '300', ENG, ['R5']),
   sc('T8', 'Other', 'other', 'no', '1', '200', COORD, ['R11']),
   sc('T9', 'Test-day outage, privacy unsure', 'outage', 'unsure', '4', '30', PRIVACY, ['R2', 'R3', 'R9', 'R10']),
+  sc('T10', 'Bug with student data', 'bug', 'yes', '2', '200', PRIVACY, ['R2', 'R5']),
   sc('M1', 'Malformed teachers', 'bug', 'no', '1e3', '200', COORD, ['R1']),
   sc('M2', 'Malformed renewal', 'bug', 'no', '5', '12.5', COORD, ['R1']),
 ]

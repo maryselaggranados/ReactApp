@@ -277,7 +277,7 @@ export default function RulesView({ s }: { s: Shared }) {
       {/* Your business rules, in plain English */}
       <Card id="rules-readout">
         <h2 className="mb-2">Your business rules, in plain English</h2>
-        <p className="mb-3">Rules version 1.0 · owned by the Customer Success operations lead · 11 rules · 11 tests</p>
+        <p className="mb-3">Rules version 1.0 · owned by the Customer Success operations lead · 11 rules · 12 tests</p>
         <ul className="mb-4 list-disc pl-6">
           <li>Sev1 at {SEV1_TEACHERS} or more teachers affected</li>
           <li>Account manager copied at {RENEWAL_WINDOW_DAYS} or fewer days to renewal</li>

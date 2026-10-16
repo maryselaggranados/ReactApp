@@ -74,7 +74,7 @@ export default function Overview({ s }: { s: Shared }) {
 
       <p className="max-w-[44rem]">
         <button className="text-left text-accent underline underline-offset-2" onClick={() => s.go('rules', 'rules-readout')}>
-          Your expert rules, extracted into code: 11 rules, 11 tests, and a check on every AI step.
+          Your expert rules, extracted into code: 11 rules, 12 tests, and a check on every AI step.
         </button>
       </p>
 

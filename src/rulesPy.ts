@@ -147,6 +147,7 @@ SCENARIOS = [
     ("T7", {"issue_type": "bug", "student_data": "no", "teachers_affected": "5", "renewal_days": "300"}, ENG, ["R5"]),
     ("T8", {"issue_type": "other", "student_data": "no", "teachers_affected": "1", "renewal_days": "200"}, COORD, ["R11"]),
     ("T9", {"issue_type": "outage", "student_data": "unsure", "teachers_affected": "4", "renewal_days": "30"}, PRIVACY, ["R2", "R3", "R9", "R10"]),
+    ("T10", {"issue_type": "bug", "student_data": "yes", "teachers_affected": "2", "renewal_days": "200"}, PRIVACY, ["R2", "R5"]),
     ("M1", {"issue_type": "bug", "student_data": "no", "teachers_affected": "1e3", "renewal_days": "200"}, COORD, ["R1"]),
     ("M2", {"issue_type": "bug", "student_data": "no", "teachers_affected": "5", "renewal_days": "12.5"}, COORD, ["R1"]),
 ]

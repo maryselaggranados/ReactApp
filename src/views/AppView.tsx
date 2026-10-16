@@ -16,6 +16,7 @@ import {
   SCENARIOS,
   SEV1,
   STUDENT_DATA,
+  routesNotUsed,
   validate,
   type Check,
   type Decision,
@@ -681,6 +682,7 @@ function OutputPanel({
   const draft = sub?.draft ?? null
   const steps = buildSteps(sub, readInfo)
   const status = d ? RESULT_STATUS[d.result] : null
+  const notUsed = d ? routesNotUsed(d) : {}
 
   return (
     <Card className="@container">
@@ -740,6 +742,7 @@ function OutputPanel({
           <ul className="flex flex-col gap-1">
             {d.explanation.map((e, i) => {
               const id = e.split(' ')[0]
+              const lostTo = sub.outcome.mismatch ? undefined : notUsed[id]
               return (
                 <li key={i}>
                   {/^R\d+$/.test(id) ? (
@@ -749,6 +752,12 @@ function OutputPanel({
                     </>
                   ) : (
                     e
+                  )}
+                  {lostTo && (
+                    <span className="text-muted">
+                      {' '}
+                      (route not used: <Mono>{lostTo}</Mono> wins)
+                    </span>
                   )}
                 </li>
               )

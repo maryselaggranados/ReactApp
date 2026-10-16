@@ -22,7 +22,7 @@ A Customer Success coordinator pastes one teacher or district item (a support ti
 - Four views, state-toggled: Overview (default), App, Rules Module, and Executive Readout
 - App view: 4-field input form: Issue type, Student data involved, Teachers affected, Days to district renewal
 - Deterministic rules engine with a "Why this result" rule trace
-- 11 clickable test scenarios (links, not a dropdown), a Self-Test button, and a Stress Test button
+- 12 clickable test scenarios (links, not a dropdown), a Self-Test button, and a Stress Test button
 - "How this request ran": a six-step trace at the top of the output panel, AI and rules alternating, each step with its decider badge and Pass or Fail
 - Rules Module view, headed "Determinism + Probabilism": "Same request, 3 runs" first (the AI's words vary, the checks and the route do not), the check loop, "Your business rules, in plain English" for the rule owner, then the expert rules as code (the Python source), the parity table, and the Stress Test
 - Executive Readout view: the recommendation, live ROI and payback, what has to be true, a live Self-Test badge, the quality bar, and the ask
@@ -102,7 +102,7 @@ State-toggled between `overview` (default), `app`, `rules` (the Rules Module vie
 2. One sentence under it: "Customer Success coordinators spend 20 minutes triaging each of about 150 teacher and district escalations a week."
 3. A KPI strip: 4 tiles in one row (2 × 2 on mobile), no borders between them heavier than the divider. Each tile: the number at 1.75rem weight 700, a 0.8rem label under it, and the number's label (ASSUMED) in `text-muted`: 2,400 hours a year · $132,000 a year · 15% misrouted · Conservative payback (read live from the ROI Panel).
 4. "How each case is decided": one horizontal row of three steps joined by arrows (stacked on mobile), not cards. Step 1, **Probabilistic: AI.** "AI reads each ticket or set of notes, proposes the fields, names the issue type, and drafts the routing note. Its wording varies from run to run." Step 2, **Deterministic: your rules.** "Your rules check everything the AI produces and decide where each item goes and who is copied. Same input, same answer, every time." Step 3, **Accountable: a person.** "The coordinator confirms the fields; the privacy officer reviews every student-data case; the Head of Customer Success confirms every Sev1 page."
-5. One line under the row: "Your expert rules, extracted into code: 11 rules, 11 tests, and a check on every AI step." It links to "Your business rules, in plain English" in the Rules Module view.
+5. One line under the row: "Your expert rules, extracted into code: 11 rules, 12 tests, and a check on every AI step." It links to "Your business rules, in plain English" in the Rules Module view.
 6. Button "Open the tool" (`primary`) switches state to `app`.
 
 ### App View
@@ -147,8 +147,9 @@ Sample requests, written in the user's own words (links that paste the text into
 7. **T7 Bug**: issue_type bug, student_data no, teachers_affected 5, renewal_days 300. Expected **Engineering queue** via R5.
 8. **T8 Other**: issue_type other, student_data no, teachers_affected 1, renewal_days 200. Expected **Coordinator review** via R11.
 9. **T9 Test-day outage, privacy unsure**: issue_type outage, student_data unsure, teachers_affected 4, renewal_days 30. Expected **Privacy officer** via R2, R3, R9, R10.
-10. **M1 Malformed teachers**: issue_type bug, student_data no, teachers_affected "1e3", renewal_days 200. Expected **Coordinator review** via R1.
-11. **M2 Malformed renewal**: issue_type bug, student_data no, teachers_affected 5, renewal_days "12.5". Expected **Coordinator review** via R1.
+10. **T10 Bug with student data**: issue_type bug, student_data yes, teachers_affected 2, renewal_days 200. Expected **Privacy officer** via R2, R5.
+11. **M1 Malformed teachers**: issue_type bug, student_data no, teachers_affected "1e3", renewal_days 200. Expected **Coordinator review** via R1.
+12. **M2 Malformed renewal**: issue_type bug, student_data no, teachers_affected 5, renewal_days "12.5". Expected **Coordinator review** via R1.
 
 ## Validation (read each field once)
 - One function turns the raw form values into typed values, or reports which field is invalid. Rules never read raw form text, and nothing else parses a field.
@@ -186,7 +187,7 @@ A third view, linked from the top bar and from "How this was decided" under ever
 - Under the caption, in `text-muted`: "Autonomy: low by design. Code sets the order of the steps; AI reads, asks, and drafts; your rules check and decide; a person approves. Raise autonomy only as the checks earn trust."
 - One line: "Rules alone, run 25 times" (a secondary button that calls `determinism_check`) and its result, "25 runs · 1 distinct result".
 - "The check loop": a row of counts from the read log (passed first time · passed after one retry · asked the requester · sent to a person) and one from the draft log (passed first time · passed after one retry · sent to a person), and the last 10 entries.
-- **"Your business rules, in plain English"** (for the person who owns the rules; no code), with the id `rules-readout`: the line "Rules version 1.0 · owned by the Customer Success operations lead · 11 rules · 11 tests"; the thresholds as a short list; one table with a row per rule, copied word for word from the Deterministic Rules table (never paraphrased): ID · Rule (IF … THEN …) · Result · Tested by (the names of the scenarios whose expected rule IDs include it, computed from the scenarios; "Not tested" in `rule-escalate` if none); then the conflict line and the next step for each result. Under it, in `text-muted`: "To change a rule, tell the Copilot its ID and the change. It updates the rule, its tests, and the code together, and Self-Test checks them." A secondary "Print the rules" button prints only this section on one page.
+- **"Your business rules, in plain English"** (for the person who owns the rules; no code), with the id `rules-readout`: the line "Rules version 1.0 · owned by the Customer Success operations lead · 11 rules · 12 tests"; the thresholds as a short list; one table with a row per rule, copied word for word from the Deterministic Rules table (never paraphrased): ID · Rule (IF … THEN …) · Result · Tested by (the names of the scenarios whose expected rule IDs include it, computed from the scenarios; "Not tested" in `rule-escalate` if none); then the conflict line and the next step for each result. Under it, in `text-muted`: "To change a rule, tell the Copilot its ID and the change. It updates the rule, its tests, and the code together, and Self-Test checks them." A secondary "Print the rules" button prints only this section on one page.
 - "Your expert rules, extracted into code": the Python source with line numbers, Copy, and Download rules.py.
 - "Parity": the Stress Test and a per-scenario table (Scenario, Expected, Python, JavaScript, Match).
 
@@ -212,7 +213,7 @@ Display "Reading the request...", "Writing a question...", "Drafting the routing
 Each part carries a small badge naming its decider, so the reader sees who did what:
 1. **How this request ran**: six steps, each with a 3px top border in its decider's color and one status word: (1) AI read the request and named the issue type (with its confidence), or "Entered by the coordinator" (badged "a person") when nothing was read; (2) Rules checked the fields: Pass, Passed after one retry, Asked the requester, or Sent to a person; (3) Rules decided the route: the result and rule IDs; (4) AI drafted the note; (5) Rules checked the draft: Pass with D1–D4, or the failed check; (6) A person decides: the approver, or "No person needed". A step that did not run shows "Skipped".
 2. **Decision**: large, colored by status token (Support → rule-approve · Product backlog → rule-approve · Engineering queue → rule-review · Coordinator review → rule-review · Sev1: page engineering on-call → rule-escalate · Privacy officer → rule-escalate), with the badge "Decided by your rules". Show "Copy: Account manager" under it when R9 fired.
-3. **Why this result**: the rule IDs that fired, in plain English, with the input values that triggered them.
+3. **Why this result**: the rule IDs that fired, in plain English, with the input values that triggered them. After any routing rule whose route did not win, add "(route not used: [winning rule ID] wins)".
 4. **AI draft**: with the badge "Drafted by AI · wording varies", and under it "Checked by your rules:" with D1–D4 and Pass or Fail for each. If the fields came from an AI read, show above the decision "Fields read by AI, checked by your rules, confirmed by you"; show "Check this draft" when `needs_review` is true.
 5. **Next step and owner**, from the "Next step by result" line.
 6. **Footer** (monospace): `RULES v1.0 · 11 RULES · SYNTHETIC DATA · PROTOTYPE`
@@ -436,6 +437,7 @@ SCENARIOS = [
     ("T7", {"issue_type": "bug", "student_data": "no", "teachers_affected": "5", "renewal_days": "300"}, ENG, ["R5"]),
     ("T8", {"issue_type": "other", "student_data": "no", "teachers_affected": "1", "renewal_days": "200"}, COORD, ["R11"]),
     ("T9", {"issue_type": "outage", "student_data": "unsure", "teachers_affected": "4", "renewal_days": "30"}, PRIVACY, ["R2", "R3", "R9", "R10"]),
+    ("T10", {"issue_type": "bug", "student_data": "yes", "teachers_affected": "2", "renewal_days": "200"}, PRIVACY, ["R2", "R5"]),
     ("M1", {"issue_type": "bug", "student_data": "no", "teachers_affected": "1e3", "renewal_days": "200"}, COORD, ["R1"]),
     ("M2", {"issue_type": "bug", "student_data": "no", "teachers_affected": "5", "renewal_days": "12.5"}, COORD, ["R1"]),
 ]
